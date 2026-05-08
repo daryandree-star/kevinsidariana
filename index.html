@@ -1,0 +1,1273 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070707">
+  <title>Dariana & Kevin | Invitatie de nunta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #070707;
+      --ink: #121212;
+      --muted: #686868;
+      --line: rgba(12, 12, 12, .14);
+      --paper: #fbfaf7;
+      --paper-soft: #f4f1ec;
+      --white: #ffffff;
+      --silver: #d8d8d8;
+      --shadow: 0 28px 80px rgba(0, 0, 0, .24);
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, .1), transparent 34rem),
+        linear-gradient(145deg, #030303 0%, #151515 42%, #050505 100%);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
+      background-size: 58px 58px;
+      mask-image: radial-gradient(circle at center, black, transparent 80%);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .screen {
+      min-height: 100vh;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .intro {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(255, 255, 255, .14), transparent 24rem),
+        #060606;
+      transition: transform .9s cubic-bezier(.72, 0, .2, 1), opacity .65s ease, visibility .65s ease;
+    }
+
+    .intro.is-open {
+      transform: translateY(-105%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .envelope-stage {
+      width: min(92vw, 430px);
+      text-align: center;
+      perspective: 1100px;
+    }
+
+    .monogram {
+      color: var(--paper);
+      font-family: var(--serif);
+      font-size: clamp(34px, 12vw, 58px);
+      font-weight: 600;
+      letter-spacing: .08em;
+      margin-bottom: 20px;
+    }
+
+    .envelope {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1.42 / 1;
+      filter: drop-shadow(0 32px 60px rgba(0, 0, 0, .46));
+    }
+
+    .env-back,
+    .env-front,
+    .env-flap {
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+    }
+
+    .env-back {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .9), rgba(235, 232, 225, .92)),
+        var(--paper);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .82);
+    }
+
+    .env-flap {
+      transform-origin: top center;
+      clip-path: polygon(0 0, 100% 0, 50% 58%);
+      background: linear-gradient(180deg, #ffffff 0%, #e9e6df 100%);
+      z-index: 3;
+      transition: transform .9s cubic-bezier(.2, .82, .2, 1);
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
+    }
+
+    .env-front {
+      z-index: 4;
+      background:
+        linear-gradient(38deg, transparent 49.5%, rgba(0, 0, 0, .08) 50%, transparent 50.5%),
+        linear-gradient(-38deg, transparent 49.5%, rgba(0, 0, 0, .08) 50%, transparent 50.5%),
+        linear-gradient(180deg, rgba(255, 255, 255, .96), #eeeae1);
+      clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
+      border: 1px solid rgba(255, 255, 255, .72);
+    }
+
+    .seal-button {
+      position: absolute;
+      z-index: 6;
+      left: 50%;
+      top: 50%;
+      width: clamp(96px, 28vw, 132px);
+      height: clamp(96px, 28vw, 132px);
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #202020;
+      transform: translate(-50%, -42%);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, .38), inset 0 0 0 1px rgba(255, 255, 255, .22);
+      overflow: hidden;
+      transition: transform .25s ease, filter .25s ease;
+    }
+
+    .seal-button:active {
+      transform: translate(-50%, -42%) scale(.97);
+    }
+
+    .seal-button img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      filter: grayscale(1) contrast(1.08);
+    }
+
+    .tap-copy {
+      margin: 24px 0 0;
+      color: rgba(255, 255, 255, .72);
+      font-size: 12px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    .intro.opening .env-flap {
+      transform: rotateX(178deg);
+    }
+
+    .intro.opening .seal-button {
+      animation: sealLift .92s ease forwards;
+    }
+
+    @keyframes sealLift {
+      0% { transform: translate(-50%, -42%) scale(1); opacity: 1; }
+      45% { transform: translate(-50%, -64%) scale(.96); opacity: .92; }
+      100% { transform: translate(-50%, -110%) scale(.78); opacity: 0; }
+    }
+
+    .invite {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      border: 0;
+      position: relative;
+      isolation: isolate;
+      opacity: 0;
+      transform: translateY(26px) scale(.98);
+      animation: cardIn .85s .42s ease forwards;
+    }
+
+    @keyframes cardIn {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .invite::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(0, 0, 0, .22);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero {
+      min-height: 560px;
+      display: grid;
+      align-content: end;
+      position: relative;
+      overflow: hidden;
+      color: var(--white);
+      padding: 24px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border: 1px solid rgba(255, 255, 255, .34);
+      pointer-events: none;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, .12) 0%, rgba(0, 0, 0, .34) 36%, rgba(0, 0, 0, .88) 100%),
+        url("a57ae974-23f8-4c38-9ef5-3c69d3f661b8.jpg") center / cover;
+      filter: grayscale(1) contrast(1.05);
+      transform: scale(1.02);
+      z-index: -1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(52px, 17vw, 82px);
+      line-height: .86;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .date-line {
+      margin: 30px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--serif);
+      font-size: 25px;
+      font-weight: 600;
+    }
+
+    .date-line::before,
+    .date-line::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: rgba(255, 255, 255, .42);
+    }
+
+    .section {
+      padding: 34px 28px;
+      text-align: center;
+      position: relative;
+      background:
+        linear-gradient(90deg, transparent 0, transparent calc(50% - 1px), rgba(0, 0, 0, .04) 50%, transparent calc(50% + 1px)),
+        var(--paper);
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--line);
+    }
+
+    .divider {
+      width: min(210px, 62vw);
+      height: 26px;
+      margin: 24px auto 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(0, 0, 0, .2);
+    }
+
+    .divider span {
+      width: 7px;
+      height: 7px;
+      border: 1px solid rgba(0, 0, 0, .42);
+      transform: rotate(45deg);
+      background: var(--paper);
+    }
+
+    .script {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 21px;
+      line-height: 1.28;
+      margin: 0 auto;
+      max-width: 360px;
+    }
+
+    .names {
+      margin: 18px 0 12px;
+      font-family: var(--serif);
+      font-size: 41px;
+      line-height: .98;
+      font-weight: 700;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .family-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .family-card {
+      padding: 18px 14px;
+      border: 1px solid rgba(0, 0, 0, .14);
+      background: rgba(255, 255, 255, .58);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, .05);
+    }
+
+    .family-role {
+      margin: 0 0 5px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .family-name {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .time-box {
+      border: 1px solid rgba(0, 0, 0, .16);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .9), rgba(244, 241, 236, .72));
+      padding: 12px 4px 10px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7), 0 10px 28px rgba(0, 0, 0, .05);
+    }
+
+    .time-box strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: clamp(27px, 9vw, 38px);
+      line-height: .9;
+      font-weight: 700;
+    }
+
+    .time-box span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .event-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+      text-align: left;
+    }
+
+    .event {
+      border: 1px solid rgba(0, 0, 0, .14);
+      background: rgba(255, 255, 255, .62);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .event::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--black);
+    }
+
+    .event time {
+      display: block;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .event h3 {
+      margin: 6px 0 4px;
+      font-family: var(--serif);
+      font-size: 23px;
+      line-height: 1.06;
+    }
+
+    .event p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .venue-tag {
+      display: inline-block;
+      margin-top: 13px;
+      color: var(--ink);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .btn {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--black);
+      background: var(--black);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: transform .2s ease, background .2s ease, color .2s ease;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--black);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: scale(.985);
+    }
+
+    .rsvp {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .74), rgba(244, 241, 236, .96)),
+        var(--paper-soft);
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+      text-align: left;
+      padding: 18px;
+      border: 1px solid rgba(0, 0, 0, .14);
+      background: rgba(255, 255, 255, .55);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, .05);
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(0, 0, 0, .18);
+      border-radius: 0;
+      background: rgba(255, 255, 255, .76);
+      color: var(--ink);
+      padding: 14px 13px;
+      outline: none;
+      font-size: 15px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    textarea {
+      min-height: 94px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--black);
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, .08);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-submit {
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .result {
+      display: none;
+      margin: 14px 0 0;
+      padding: 20px 16px;
+      border: 1px solid rgba(0, 0, 0, .18);
+      background: rgba(255, 255, 255, .78);
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .result.is-visible {
+      display: block;
+    }
+
+    .result h3 {
+      margin: 0 0 8px;
+      font-family: var(--serif);
+      font-size: 31px;
+      line-height: 1.05;
+    }
+
+    .result p {
+      margin: 0 auto;
+      max-width: 360px;
+      color: var(--muted);
+    }
+
+    .result .mini-contact {
+      display: grid;
+      gap: 7px;
+      margin-top: 16px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(0, 0, 0, .12);
+      font-weight: 700;
+    }
+
+    .result .mini-contact a {
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .notice {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .footer {
+      padding: 38px 28px 42px;
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer::before {
+      content: "K D";
+      position: absolute;
+      inset: auto 0 -34px;
+      color: rgba(255, 255, 255, .04);
+      font-family: var(--serif);
+      font-size: 118px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .footer p {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 22px;
+      font-style: italic;
+    }
+
+    .contacts {
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, .72);
+    }
+
+    .contacts a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .editorial-section {
+      padding: 34px 24px;
+      text-align: left;
+      background: linear-gradient(180deg, #fbfaf7, #f3eee7);
+      border-top: 1px solid rgba(0, 0, 0, .12);
+    }
+
+    .date-block {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 18px;
+      align-items: end;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(0, 0, 0, .14);
+    }
+
+    .date-block span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
+
+    .date-block strong {
+      display: block;
+      margin: 8px 0 12px;
+      font-family: var(--serif);
+      font-size: 62px;
+      line-height: .9;
+      font-weight: 600;
+      color: #15120f;
+    }
+
+    .lead-title {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(30px, 10.6vw, 46px);
+      line-height: .98;
+      font-weight: 600;
+      color: #2b251f;
+    }
+
+    .lead-copy {
+      margin: 20px 0 0;
+      color: #6f655d;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .support-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(0, 0, 0, .12);
+    }
+
+    .support-list p {
+      margin: 0;
+      color: #6f655d;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .support-list strong {
+      display: block;
+      margin-top: 5px;
+      color: #2b251f;
+      font-family: var(--serif);
+      font-size: 24px;
+      font-style: italic;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .program {
+      padding: 34px 24px 38px;
+      text-align: left;
+      background: #fbfaf7;
+      border-top: 1px solid rgba(0, 0, 0, .12);
+    }
+
+    .section-kicker {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
+
+    .program h2,
+    .rsvp h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(32px, 10.6vw, 46px);
+      line-height: .98;
+      font-weight: 600;
+      color: #2b251f;
+    }
+
+    .program-date {
+      margin: 16px 0 0;
+      padding: 13px 0 15px;
+      border-top: 1px solid rgba(0, 0, 0, .14);
+      border-bottom: 1px solid rgba(0, 0, 0, .14);
+      color: #15120f;
+      font-family: var(--serif);
+      font-size: 34px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: .04em;
+      text-align: center;
+    }
+
+    .program-intro {
+      margin: 16px 0 26px;
+      color: #756b63;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 0;
+      margin-top: 24px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 22px 0;
+      border-top: 1px solid rgba(0, 0, 0, .12);
+    }
+
+    .timeline-item:last-child {
+      border-bottom: 1px solid rgba(0, 0, 0, .12);
+    }
+
+    .timeline-time {
+      align-self: start;
+      width: fit-content;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #15120f;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .timeline-item h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 27px;
+      line-height: 1.04;
+      color: #2b251f;
+    }
+
+    .timeline-item p {
+      margin: 8px 0 0;
+      color: #756b63;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .countdown.editorial-countdown {
+      margin-top: 30px;
+    }
+
+    .rsvp.editorial-section {
+      background: linear-gradient(180deg, #f8f4ee, #fbfaf7);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: revealUp .8s ease forwards;
+    }
+
+    .reveal:nth-child(2) {
+      animation-delay: .08s;
+    }
+
+    .reveal:nth-child(3) {
+      animation-delay: .16s;
+    }
+
+    @keyframes revealUp {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .intro {
+        min-height: 100svh;
+        padding: 0 18px;
+      }
+
+      .envelope-stage {
+        width: min(88vw, 380px);
+        transform: translateY(-4svh);
+      }
+
+      .monogram {
+        margin-bottom: 18px;
+      }
+
+      .invite::before {
+        inset: 8px;
+      }
+
+      .hero {
+        min-height: 520px;
+        padding: 22px;
+      }
+
+      .hero::after {
+        inset: 14px;
+      }
+
+      .eyebrow,
+      .section-kicker {
+        letter-spacing: .22em;
+      }
+
+      .date-line {
+        margin-top: 24px;
+        display: block;
+        font-size: 24px;
+        text-align: center;
+        gap: 9px;
+      }
+
+      .date-line::before,
+      .date-line::after {
+        display: none;
+      }
+
+      .editorial-section,
+      .program {
+        padding-left: 22px;
+        padding-right: 22px;
+      }
+
+      .date-block {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        align-items: start;
+      }
+
+      .date-block strong {
+        font-size: 58px;
+        margin: 10px 0 14px;
+        line-height: .92;
+      }
+
+      .lead-title {
+        max-width: 100%;
+        font-size: 38px;
+        line-height: 1.02;
+      }
+
+      .lead-copy,
+      .program-intro,
+      .timeline-item p {
+        font-size: 13px;
+      }
+
+      .program h2,
+      .rsvp h2 {
+        font-size: 38px;
+        line-height: 1.02;
+      }
+
+      .program-date {
+        font-size: 32px;
+      }
+
+      .timeline-item h3 {
+        font-size: 25px;
+      }
+
+      .result h3 {
+        font-size: 34px;
+      }
+
+      .support-list p {
+        letter-spacing: .16em;
+      }
+
+      .support-list strong {
+        font-size: 22px;
+      }
+
+      .actions,
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .countdown {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      form {
+        padding: 16px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .hero {
+        min-height: 500px;
+      }
+
+      h1 {
+        font-size: 47px;
+      }
+
+      .lead-title,
+      .program h2,
+      .rsvp h2 {
+        font-size: 34px;
+      }
+
+      .editorial-section,
+      .program {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+    }
+
+    @media (min-width: 720px) {
+      .screen {
+        padding: 48px;
+      }
+
+      .invite {
+        width: min(92vw, 560px);
+      }
+
+      .hero {
+        min-height: 720px;
+        padding: 40px;
+      }
+
+      .section {
+        padding: 46px 46px;
+      }
+
+      .family-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="intro" id="intro" aria-label="Deschide invitatia">
+    <div class="envelope-stage">
+      <div class="monogram">K | D</div>
+      <div class="envelope" aria-hidden="true">
+        <div class="env-back"></div>
+        <div class="env-flap"></div>
+        <div class="env-front"></div>
+        <button class="seal-button" id="openSeal" type="button" aria-label="Apasa pe sigiliu pentru a deschide invitatia">
+          <img src="c95de9c1-2301-4a76-bb28-776704592bfe.png" alt="">
+        </button>
+      </div>
+      <p class="tap-copy">Apasa sigiliul</p>
+    </div>
+  </div>
+
+  <main class="screen">
+    <article class="invite" aria-label="Invitatie de nunta Dariana si Kevin">
+      <section class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">Invitatie de nunta</p>
+          <h1>Dariana<br>& Kevin</h1>
+          <div class="date-line">03.10.2026</div>
+        </div>
+      </section>
+
+      <section class="editorial-section">
+        <div class="date-block">
+          <div>
+            <span>Octombrie</span>
+            <strong>03</strong>
+            <span>2026</span>
+          </div>
+          <div>
+            <p class="lead-title">Unele povesti sunt scrise sa dureze pentru totdeauna</p>
+          </div>
+        </div>
+        <p class="lead-copy">Povestea noastra ne aduce aici, in ziua in care alegem sa pasim impreuna spre un nou inceput. Bucuria acestui moment devine mai frumoasa atunci cand este impartasita cu oamenii care conteaza cu adevarat pentru noi.</p>
+        <p class="lead-copy">Avem placerea de a va invita sa ne fiti alaturi la celebrarea casatoriei noastre, intr-o zi plina de emotie, eleganta si amintiri pe care le vom purta cu drag peste ani.</p>
+
+        <div class="support-list">
+          <p>Cu binecuvantarea parintilor miresei <strong>Copariu Vasile & Elena</strong></p>
+          <p>Cu dragostea mamei mirelui <strong>Luca Gabriela</strong></p>
+          <p>Alaturi de nasii nostri <strong>Copariu Cristi & Carmen</strong></p>
+        </div>
+      </section>
+
+      <section class="program">
+        <p class="section-kicker">Programul zilei</p>
+        <h2>Ziua in care sarbatorim iubirea</h2>
+        <div class="program-date">03.10.2026</div>
+        <p class="program-intro">Ceremonia religioasa va avea loc la biserica, iar apoi vom continua impreuna aceasta zi speciala la Villa Trevi. Ne dorim o seara eleganta, plina de emotie, energie buna si momente care sa ramana amintiri frumoase.</p>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-time">15:00</span>
+            <div>
+              <h3>Cununia religioasa</h3>
+              <p>Biserica Sf. Ilie Tesviteanul Inaltarea Domnului, Mosnita Noua.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">17:30</span>
+            <div>
+              <h3>Primirea invitatilor</h3>
+              <p>Villa Trevi, Bazosu Nou. Continuam ziua cu zambete, pahare ridicate si bucuria revederii.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="btn secondary" href="https://maps.app.goo.gl/1tWBKNn4RSwT3rgS8" target="_blank" rel="noreferrer">Biserica</a>
+          <a class="btn secondary" href="https://maps.app.goo.gl/Hio1yn7Rcer2DUEZ9" target="_blank" rel="noreferrer">Villa Trevi</a>
+        </div>
+
+        <div class="countdown editorial-countdown" aria-live="polite">
+          <div class="time-box"><strong id="days">0</strong><span>Zile</span></div>
+          <div class="time-box"><strong id="hours">0</strong><span>Ore</span></div>
+          <div class="time-box"><strong id="minutes">0</strong><span>Minute</span></div>
+          <div class="time-box"><strong id="seconds">0</strong><span>Secunde</span></div>
+        </div>
+      </section>
+
+      <section class="editorial-section rsvp" id="confirmare">
+        <p class="section-kicker">Confirmare</p>
+        <h2>Raspunsul vostru</h2>
+        <p class="lead-copy">Va rugam sa confirmati prezenta pana la 01 Septembrie 2026, ca sa putem pregati cu grija fiecare detaliu al acestei zile.</p>
+
+        <form id="rsvpForm">
+          <label>
+            Nume complet
+            <input id="guestName" name="guestName" autocomplete="name" required placeholder="Ex: Popescu Andreea">
+          </label>
+          <div class="form-row">
+            <label>
+              Raspuns
+              <select id="attendance" name="attendance" required>
+                <option value="Confirm prezenta">Vin cu drag</option>
+                <option value="Nu pot ajunge">Nu pot ajunge</option>
+              </select>
+            </label>
+            <label>
+              Persoane
+              <input id="guestCount" name="guestCount" type="number" min="1" max="10" value="1" required>
+            </label>
+          </div>
+          <button class="btn form-submit" type="submit">Trimite confirmarea</button>
+        </form>
+        <div class="result" id="result"></div>
+      </section>
+
+      <footer class="footer">
+        <p>Va asteptam cu drag sa sarbatorim impreuna inceputul povestii noastre.</p>
+      </footer>
+    </article>
+  </main>
+
+  <script>
+    const intro = document.getElementById("intro");
+    const openSeal = document.getElementById("openSeal");
+    const targetDate = new Date("2026-10-03T15:00:00+03:00").getTime();
+    const timeIds = ["days", "hours", "minutes", "seconds"];
+    const googleScriptUrl = "https://script.google.com/macros/s/AKfycbydzCBmNMyycvTMZ2qS2kuZ5N25Say_x_yCaEjTQAA9f_H75xL9KgGZHjhIAfCHuVjr/exec";
+
+    function openInvitation() {
+      intro.classList.add("opening");
+      window.setTimeout(() => {
+        intro.classList.add("is-open");
+        document.getElementById("confirmare").scrollIntoView({ block: "nearest" });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.setTimeout(() => {
+          intro.style.display = "none";
+        }, 900);
+      }, 780);
+    }
+
+    openSeal.addEventListener("click", openInvitation);
+
+    function updateCountdown() {
+      const distance = Math.max(0, targetDate - Date.now());
+      const days = Math.floor(distance / 86400000);
+      const hours = Math.floor((distance % 86400000) / 3600000);
+      const minutes = Math.floor((distance % 3600000) / 60000);
+      const seconds = Math.floor((distance % 60000) / 1000);
+      [days, hours, minutes, seconds].forEach((value, index) => {
+        document.getElementById(timeIds[index]).textContent = String(value).padStart(index ? 2 : 1, "0");
+      });
+    }
+
+    updateCountdown();
+    window.setInterval(updateCountdown, 1000);
+
+    function buildResultCard(attendance, name) {
+      const isComing = attendance === "Confirm prezenta";
+      if (isComing) {
+        return `
+          <h3>Multumim, ${name}!</h3>
+          <p>Ne bucuram enorm ca vei fi alaturi de noi. Prezenta ta face aceasta zi mai frumoasa si mai plina de sens.</p>
+          <div class="mini-contact">
+            <a href="tel:+40774486433">Dariana - 0774486433</a>
+            <a href="tel:+40752656490">Kevin - 0752656490</a>
+          </div>
+        `;
+      }
+      return `
+        <h3>Ne pare rau, ${name}</h3>
+        <p>Ne pare rau ca nu vei putea fi prezent, dar iti multumim din suflet pentru raspuns si pentru gandurile bune.</p>
+        <div class="mini-contact">
+          <a href="tel:+40774486433">Dariana - 0774486433</a>
+          <a href="tel:+40752656490">Kevin - 0752656490</a>
+        </div>
+      `;
+    }
+
+    async function sendRsvpToSheet(payload) {
+      if (googleScriptUrl.includes("ADAUGA_AICI")) {
+        return { ok: false, skipped: true };
+      }
+
+      fetch(googleScriptUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          nume: payload.name,
+          raspuns: payload.attendance,
+          persoane: payload.count,
+          data: new Date().toLocaleString("ro-RO")
+        })
+      }).catch(() => {});
+
+      return { ok: true, skipped: false };
+    }
+
+    document.getElementById("rsvpForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const name = document.getElementById("guestName").value.trim();
+      const attendance = document.getElementById("attendance").value;
+      const count = document.getElementById("guestCount").value;
+      const payload = { name, attendance, count };
+      const result = document.getElementById("result");
+      const submitButton = event.submitter;
+      submitButton.disabled = true;
+      submitButton.textContent = "Se trimite...";
+
+      try {
+        const sheetResult = await sendRsvpToSheet(payload);
+        localStorage.setItem("rsvp-kevin-dariana", JSON.stringify(payload));
+        result.innerHTML = buildResultCard(attendance, name);
+        if (!sheetResult.skipped && !sheetResult.ok) {
+          result.innerHTML += `<p class="notice">Raspunsul a fost afisat aici, dar nu a putut fi trimis in Google Sheets. Verifica linkul configurat.</p>`;
+        }
+      } catch (error) {
+        result.innerHTML = buildResultCard(attendance, name) + `<p class="notice">Raspunsul a fost salvat pe acest dispozitiv, dar nu a putut fi trimis in Google Sheets momentan.</p>`;
+      }
+
+      result.classList.add("is-visible");
+      result.scrollIntoView({ behavior: "smooth", block: "center" });
+      submitButton.disabled = false;
+      submitButton.textContent = "Trimite confirmarea";
+    });
+  </script>
+</body>
+</html>
