@@ -595,6 +595,16 @@
       margin-top: 4px;
     }
 
+    form.is-submitted .form-submit {
+      display: none;
+    }
+
+    form.is-submitted input,
+    form.is-submitted select {
+      opacity: .72;
+      pointer-events: none;
+    }
+
     .result {
       display: none;
       margin: 14px 0 0;
@@ -1274,9 +1284,11 @@
       }
 
       result.classList.add("is-visible");
+      event.currentTarget.classList.add("is-submitted");
+      Array.from(event.currentTarget.elements).forEach((field) => {
+        field.disabled = true;
+      });
       result.scrollIntoView({ behavior: "smooth", block: "center" });
-      submitButton.disabled = false;
-      submitButton.textContent = "Trimite confirmarea";
     });
   </script>
 </body>
